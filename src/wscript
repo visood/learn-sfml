@@ -1,0 +1,15 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+#from waflib.Configure import conf
+import glob, os
+
+DIRS = "source"
+
+def build(bld):
+    """..."""
+    print(
+        "building at",
+        bld.path.abspath())
+    bld.env.targets= []
+    bld.recurse(DIRS)

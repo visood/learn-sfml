@@ -1,0 +1,46 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+#from waflib.Configure import conf
+import glob, os
+
+sources_with_main=[
+    "tutorial.cpp"]
+
+def build(bld):
+    """..."""
+    print(
+        "building at srcpath",
+        bld.path.srcpath())
+    cpp_files={
+        file.split("/")[-1]
+        for file in glob.glob(
+                bld.path.abspath() + "/*.cpp")}
+    includes=\
+		["../../" + x for x in bld.env.INCLUDES_REL] + bld.env.INCLUDES_ABS
+    bld.objects(
+        source=cpp_files.difference(
+            sources_with_main),
+        target="tutorial",
+        includes=includes,
+        cxxflags=bld.env.CXXFLAGS)
+    #use the following commented region to create a static library
+    # bld.stlib(
+    #     source = cpp_files,
+    #     target = "tutorial",
+    #     cxxflags = bld.env.CXXFLAGS,
+    #     includes = includes,
+    #     lib = bld.env.LDFLAGS_N)
+    bld.env.targets.append(
+        os.path.join(
+            bld.path.srcpath(),
+            "tutorial"))
+    bld.program(
+        source="tutorial.cpp",
+        use=[],
+        target="tutorial",
+        stlib=bld.env.STLIB, #static lib - needed if not default
+        cxxflags=bld.env.CXXFLAGS,
+        includes=includes,
+        lib=bld.env.LDFLAGS_N)
+

@@ -28,6 +28,7 @@
 *.app
 
 # waf stuff
+build/
 *.lock-waf_linux2_build
 *.wafpickle*
 *_cache.py
