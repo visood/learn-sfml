@@ -1,17 +1,15 @@
 #! /usr/bin/env python
 # encoding: utf-8
 
+#from waflib.Configure import conf
 import glob, os
 
-DIRS = "utils tutorial games"
+#DIRS=""
+DIRS = "timber"
 
 def build(bld):
     """..."""
     print(
         "building at",
         bld.path.abspath())
-    INCLUDES=\
-        ["../" + x for x in bld.env.INCLUDES_REL] + bld.env.INCLUDES_ABS
-    print(
-        "INCLUDES: {}".format(INCLUDES))
     bld.recurse(DIRS)

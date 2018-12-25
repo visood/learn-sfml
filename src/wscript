@@ -11,5 +11,4 @@ def build(bld):
     print(
         "building at",
         bld.path.abspath())
-    bld.env.targets= []
     bld.recurse(DIRS)

@@ -31,13 +31,14 @@ def build(bld):
     #     cxxflags = bld.env.CXXFLAGS,
     #     includes = includes,
     #     lib = bld.env.LDFLAGS_N)
-    bld.env.targets.append(
+    bld.env.append_unique(
+        "targets",
         os.path.join(
             bld.path.srcpath(),
             "tutorial"))
     bld.program(
         source="tutorial.cpp",
-        use=[],
+        use=["FS"],
         target="tutorial",
         stlib=bld.env.STLIB, #static lib - needed if not default
         cxxflags=bld.env.CXXFLAGS,

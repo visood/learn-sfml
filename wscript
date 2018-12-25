@@ -40,11 +40,19 @@ def global_env(context):
          "bz2",
          "gsl",
          "gslcblas",
-         "dl"])
+         "dl",
+         "c++fs"])
+    context.env.append_unique(
+        "LIBPATH_FS",
+        ["/usr/local/opt/llvm/lib"])
+    context.env.LIBPATH_MYLIB = ['/usr/local/lib']
     context.env.append_unique(
         "CATCH_PATH",
         "/usr/local/include/Catch")
-
+    context.env.append_unique(
+        "INCLUDES_REL",
+        ["include",
+         "include/utils"])
 
 def configure_gcc(conf):
     """..."""
@@ -70,7 +78,7 @@ def configure_gcc(conf):
         '-Wextra',
         '-Wconversion',
         '-O3',
-        '-std=c++14']
+        '-std=c++17']
     conf.define(
         'RELEASE', 1)
     conf.setenv(
@@ -86,7 +94,15 @@ def configure_gcc(conf):
 def configure_clang(conf):
     """..."""
     conf.find_program(
-        "clang++", var="CXX", mandatory=True)
+        "clang",
+        var="C",
+        mandatory=True)
+    conf.load(
+        "clang")
+    conf.find_program(
+        "clang++",
+        var="CXX",
+        mandatory=True)
     conf.load(
         "clang++")
     global_env(conf)
@@ -98,8 +114,9 @@ def configure_clang(conf):
     conf.setenv(
         "clang-release",
         env=conf.env.derive())
-    conf.env.CXXFLAGS=[
-        '-Wall',
+    conf.env.append_unique(
+        "CXXFLAGS",
+        ['-Wall',
          '-Wno-unknown-pragmas',
          '-Wextra',
          '-Wconversion',
@@ -111,7 +128,12 @@ def configure_clang(conf):
          '-Werror=format-security',
          '-fwrapv',
          '-O3',
-         '-std=c++1z']
+         "-std=c++17",
+         "-Wl",
+         "-stdlib=libc++"])
+    conf.env.LINKFLAGS=[
+        "-std=c++17",
+        "-stdlib=libc++"]
     conf.env.append_unique(
         "LIBS",
         ["c++", "c++abi"])
@@ -120,10 +142,11 @@ def configure_clang(conf):
     conf.setenv(
         "clang-debug",
         env=conf.env.derive())
-    conf.env.CXXFLAGS=[
-        "-g",
+    conf.env.append_unique(
+        "CXXFLAGS",
+        ["-g",
         "-glidb",
-        "-Wdocumentation"]
+        "-Wdocumentation"])
     conf.define(
         "DEBUG", 1)
 
@@ -204,6 +227,7 @@ def build(bld):
         4. waf build_debug_clang\n""")
 
     print_process("Building " + bld.variant)
+    bld.env.targets= []
     bld.recurse(DIRS)
     print(
         "targets built: {}".format(
