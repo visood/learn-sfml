@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <string>
 #include <SFML/Graphics.hpp>
 #include "utils.h"
 
@@ -13,16 +14,17 @@ int main(int argc, char** argv) {
 				  << mode.height << "-"
 				  << mode.bitsPerPixel
 				  << " is valid"
-				  << std::endl;
-	}
+				  << std::endl;}
+
+    std::cout << "env width " << std::getenv("VIDEOMODEWIDTH")
+			  << "\nenv height " << std::getenv("VIDEOMODEHEIGHT");
+    
+
 	VideoMode
-       video_mode(2048, 1536, 32);
-    std::cout << "Selected video mode "
-              << video_mode.width << " X "
-              << video_mode.height << " X "
-              << video_mode.bitsPerPixel
-              << (video_mode.isValid() ? " is " : " is not ") << " valid."
-              << std::endl;
+       video_mode(
+           std::stoi(std::getenv("VIDEOMODEWIDTH")),
+           std::stoi(std::getenv("VIDEOMODEHEIGHT")),
+           32);
 	RenderWindow
 		window(
 			video_mode,
