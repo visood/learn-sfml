@@ -41,14 +41,9 @@ def global_env(context):
          "gsl",
          "gslcblas",
          "dl",
-         "c++fs"])
-    context.env.append_unique(
-        "LIBPATH_FS",
-        ["/usr/local/opt/llvm/lib"])
-    context.env.LIBPATH_MYLIB = ['/usr/local/lib']
-    context.env.append_unique(
-        "CATCH_PATH",
-        "/usr/local/include/Catch")
+         "stdc++fs"])
+    context.env.LIBPATH_MYLIB=\
+        ['/usr/local/lib']
     context.env.append_unique(
         "INCLUDES_REL",
         ["include",
@@ -69,6 +64,12 @@ def configure_gcc(conf):
     conf.env.append_unique(
         "STLIB",
         "stdc++")
+    conf.env.append_unique(
+        "LDFLAGS_N",
+        ["stdc++fs"])
+    conf.env.CXXFLAGS=[
+        "-std=c++17"]
+
     conf.setenv(
         "gcc-release",
         env=conf.env.derive())
@@ -81,6 +82,7 @@ def configure_gcc(conf):
         '-std=c++17']
     conf.define(
         'RELEASE', 1)
+
     conf.setenv(
         'gcc-debug',
         env=conf.env.derive())
@@ -88,7 +90,8 @@ def configure_gcc(conf):
         '-DDEBUG',
         '-D_GLIBCXX_DEBUG',
         '-D_GLIBCXX_DEBUG_PEDANTIC',
-        '-g', '-std=c++14']
+        '-g',
+        "-std=c++17"]
     conf.define('DEBUG', 1)
 
 def configure_clang(conf):
@@ -107,10 +110,18 @@ def configure_clang(conf):
         "clang++")
     global_env(conf)
     conf.env.append_unique(
+        "LIBPATH_FS",
+        ["/usr/local/opt/llvm/lib"])
+    conf.env.append_unique(
         "LDFLAGS_N",
         ["pthread",
          "util",
+         "c++fs",
          "m"])
+    conf.env.append_unique(
+        "CATCH_PATH",
+        "/usr/local/include/Catch")
+
     conf.setenv(
         "clang-release",
         env=conf.env.derive())
@@ -139,6 +150,7 @@ def configure_clang(conf):
         ["c++", "c++abi"])
     conf.define(
         "RELEASE", 1)
+
     conf.setenv(
         "clang-debug",
         env=conf.env.derive())
