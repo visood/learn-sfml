@@ -67,31 +67,32 @@ def configure_gcc(conf):
     conf.env.append_unique(
         "LDFLAGS_N",
         ["stdc++fs"])
-    conf.env.CXXFLAGS=[
-        "-std=c++17"]
+    conf.env.append_unique(
+        "CXXFLAGS",
+        ["-std=c++17"])
 
     conf.setenv(
         "gcc-release",
         env=conf.env.derive())
-    conf.env.CXXFLAGS=[
-        '-Wall',
-        '-Wno-unknown-pragmas',
-        '-Wextra',
-        '-Wconversion',
-        '-O3',
-        '-std=c++17']
+    conf.env.append_unique(
+        "CXXFLAGS",
+        ['-Wall',
+         '-Wno-unknown-pragmas',
+         '-Wextra',
+         '-Wconversion',
+         '-O3'])
     conf.define(
         'RELEASE', 1)
 
     conf.setenv(
         'gcc-debug',
         env=conf.env.derive())
-    conf.env.CXXFLAGS=[
-        '-DDEBUG',
+    conf.env.append_unique(
+        "CXXFLAGS",
+        ['-DDEBUG',
         '-D_GLIBCXX_DEBUG',
         '-D_GLIBCXX_DEBUG_PEDANTIC',
-        '-g',
-        "-std=c++17"]
+        '-g'])
     conf.define('DEBUG', 1)
 
 def configure_clang(conf):

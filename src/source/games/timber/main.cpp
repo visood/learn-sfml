@@ -8,39 +8,38 @@ using namespace sf;
 
 int main(int argc, char** argv) {
 
-    for (const auto& mode: VideoMode::getFullscreenModes()) {
-		std::cout << "Mode "
-				  << mode.width << "-"
-				  << mode.height << "-"
-				  << mode.bitsPerPixel
-				  << " is valid"
-				  << std::endl;}
-
-    std::cout << "env width " << std::getenv("VIDEOMODEWIDTH")
-			  << "\nenv height " << std::getenv("VIDEOMODEHEIGHT");
-    
-
+  for (const auto& mode: VideoMode::getFullscreenModes()) {
+    std::cout << "Mode "
+              << mode.width << "-"
+              << mode.height << "-"
+              << mode.bitsPerPixel
+              << " is valid"
+              << std::endl;
+  }
+  std::cout << "env width " << std::getenv("VIDEOMODEWIDTH")
+            << "\nenv height " << std::getenv("VIDEOMODEHEIGHT");
+  
 	VideoMode
-       video_mode(
-           std::stoi(std::getenv("VIDEOMODEWIDTH")),
-           std::stoi(std::getenv("VIDEOMODEHEIGHT")),
-           32);
+    video_mode(
+      std::stoi(std::getenv("VIDEOMODEWIDTH")),
+      std::stoi(std::getenv("VIDEOMODEHEIGHT")),
+      32);
 	RenderWindow
 		window(
 			video_mode,
 			"Timber!!!",
 			Style::Fullscreen);
-    std::cout << "rendered window"
-              << std::endl;
+  std::cout << "rendered window"
+            << std::endl;
 	Texture
 		texture_background;
 	texture_background
-		.loadFromFile(
-			get_resource(
-				"timber",
-				Resource::graphics,
-				"background.png"));
-    std::cout << "textured background"
+    .loadFromFile(
+      get_resource(
+        "timber",
+        Resource::graphics,
+        "background.png"));
+  std::cout << "textured background"
               << std::endl;
 	Sprite
 		sprite_background;
